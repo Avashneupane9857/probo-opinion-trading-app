@@ -18,3 +18,6 @@ export const getUserStockBalance = (req, res) => {
     msg: `${userId} stock balance is ${STOCK_BALANCES[userId]} `,
   });
 };
+
+
+//get stock symbol garda tah aaila kei pani aairako chaina 

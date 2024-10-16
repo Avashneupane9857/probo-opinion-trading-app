@@ -1,4 +1,4 @@
-import { STOCK_BALANCES } from "../data.js";
+import { ORDERBOOK, STOCK_BALANCES } from "../data.js";
 
 export const createStockSymbol = (req, res) => {
   const { stocksymbol } = req.params;
@@ -12,9 +12,12 @@ export const createStockSymbol = (req, res) => {
     yes: { quantity: 0, locked: 0 },
     no: { quantity: 0, locked: 0 },
   };
-Object.keys(STOCK_BALANCES).forEach(userId=>{
-    STOCK_BALANCES[userId][stocksymbol]={defaultSchema}
-})
+  Object.keys(STOCK_BALANCES).forEach((userId) => {
+    STOCK_BALANCES[userId][stocksymbol] = { defaultSchema };
+  });
+
+  ORDERBOOK[stocksymbol] = { yes: {}, no: {} };
+
   //   STOCK_BALANCES[stocksymbol] = { yes: { quantity: 0, locked: 0 } };
   res.status(200).json({
     msg: `Stock symbol '${stocksymbol}' created `,

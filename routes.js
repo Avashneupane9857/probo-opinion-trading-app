@@ -8,6 +8,7 @@ import {
   getUserStockBalance,
 } from "./controllers/getStockBalance.js";
 import { loadBalance } from "./controllers/loadBalance.js";
+import { reset } from "./controllers/reset.js";
 
 const routes = express.Router();
 routes.post("/user/create/:userId", createUser);
@@ -19,5 +20,5 @@ routes.get("/balances/stock", getStockBalance);
 routes.post("/onramp/inr", loadBalance);
 routes.get("/balance/stock/:userId", getUserStockBalance);
 
-routes.get("/reset");
+routes.get("/reset", reset);
 export default routes;
