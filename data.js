@@ -2,7 +2,6 @@ export let INR_BALANCES = {};
 export let ORDERBOOK = {};
 export let STOCK_BALANCES = {};
 
-
 // export const INR_BALANCES = {
 //   user1: {
 //     balance: 10,
