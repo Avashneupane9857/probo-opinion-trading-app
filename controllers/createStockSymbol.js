@@ -1,27 +1,23 @@
 import { ORDERBOOK, STOCK_BALANCES } from "../data.js";
 
 export const createStockSymbol = (req, res) => {
-  const { stocksymbol } = req.params;
-  if (STOCK_BALANCES[stocksymbol]) {
-    return res.status(401).json({
-      msg: `Stock symbol ${stocksymbol} already exists`,
-      success: false,
-    });
-  }
-  const defaultSchema = {
-    yes: { quantity: 0, locked: 0 },
-    no: { quantity: 0, locked: 0 },
-  };
+  const { stockSymbol } = req.params;
   Object.keys(STOCK_BALANCES).forEach((userId) => {
-    STOCK_BALANCES[userId][stocksymbol] = { defaultSchema };
+    STOCK_BALANCES[userId][stockSymbol] = {
+      yes: {
+        quantity: 0,
+        locked: 0,
+      },
+      no: {
+        quantity: 0,
+        locked: 0,
+      },
+    };
   });
 
-  ORDERBOOK[stocksymbol] = { yes: {}, no: {} };
+  ORDERBOOK[stockSymbol] = { yes: {}, no: {} };
 
-  //   STOCK_BALANCES[stocksymbol] = { yes: { quantity: 0, locked: 0 } };
-  res.status(200).json({
-    msg: `Stock symbol '${stocksymbol}' created `,
-    data: STOCK_BALANCES,
-    success: true,
-  });
+  return res
+    .status(201)
+    .json({ message: `Symbol ${stockSymbol} created successfully.` });
 };

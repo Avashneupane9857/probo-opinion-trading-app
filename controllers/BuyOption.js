@@ -1,4 +1,6 @@
-export const buyOption = (req, res) => {
+import { buyNoOption, buyYesOption } from "../utils/sahayog.js";
+
+export const BuyOption = (req, res) => {
   const {
     userId,
     stockSymbol,

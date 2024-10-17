@@ -1,4 +1,6 @@
-export const sellOption = (req, res) => {
+import { sellNoOption, sellYesOption } from "../utils/sahayog.js";
+
+export const SellOption = (req, res) => {
   const {
     userId,
     stockSymbol,
