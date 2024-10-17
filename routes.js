@@ -9,6 +9,7 @@ import {
 } from "./controllers/getStockBalance.js";
 import { loadBalance } from "./controllers/loadBalance.js";
 import { reset } from "./controllers/reset.js";
+import { mintTrade } from "./controllers/mintStock.js";
 
 const routes = express.Router();
 routes.post("/user/create/:userId", createUser);
@@ -19,6 +20,6 @@ routes.get("/balance/inr/:userId", getUserBalance);
 routes.get("/balances/stock", getStockBalance);
 routes.post("/onramp/inr", loadBalance);
 routes.get("/balance/stock/:userId", getUserStockBalance);
-
+routes.post("/mint/stock", mintTrade);
 routes.get("/reset", reset);
 export default routes;
