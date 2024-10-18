@@ -9,7 +9,7 @@ import {
 } from "./controllers/getStockBalance.js";
 import { loadBalance } from "./controllers/loadBalance.js";
 import { reset } from "./controllers/reset.js";
-import { mintTrade } from "./controllers/mintStock.js";
+import { mintStock } from "./controllers/mintStock.js";
 import { BuyOption } from "./controllers/BuyOption.js";
 import { SellOption } from "./controllers/SellOption.js";
 
@@ -22,7 +22,7 @@ routes.get("/balance/inr/:userId", getUserBalance);
 routes.get("/balances/stock", getStockBalance);
 routes.post("/onramp/inr", loadBalance);
 routes.get("/balance/stock/:userId", getUserStockBalance);
-routes.post("/mint/stock", mintTrade);
+routes.post("/mint/stock", mintStock);
 routes.get("/reset", reset);
 routes.post("/order/buy", BuyOption);
 routes.post("/order/sell", SellOption);

@@ -1,4 +1,6 @@
-export const mintTrade = (req, res) => {
+import { ORDERBOOK } from "../data.js";
+
+export const mintStock = (req, res) => {
   const { userId, stockSymbol, quantity } = req.body;
 
   ORDERBOOK[stockSymbol].yes[5].total += quantity;

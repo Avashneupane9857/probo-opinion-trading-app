@@ -13,11 +13,12 @@ export const getUserStockBalance = (req, res) => {
       msg: "User not found in Stock balance",
     });
   }
+
   console.log(STOCK_BALANCES[userId]);
   res.status(200).json({
-    msg: `${userId} stock balance is ${STOCK_BALANCES[userId]} `,
+    msg: `${userId} stock balance is  `,
+    data: STOCK_BALANCES[userId],
   });
 };
 
-
-//get stock symbol garda tah aaila kei pani aairako chaina 
+//get stock symbol garda tah aaila kei pani aairako chaina
