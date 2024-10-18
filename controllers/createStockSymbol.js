@@ -2,6 +2,7 @@ import { ORDERBOOK, STOCK_BALANCES } from "../data.js";
 
 export const createStockSymbol = (req, res) => {
   const { stockSymbol } = req.params;
+  console.log(stockSymbol);
   Object.keys(STOCK_BALANCES).forEach((userId) => {
     STOCK_BALANCES[userId][stockSymbol] = {
       yes: {
