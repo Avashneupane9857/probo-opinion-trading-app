@@ -1,15 +1,13 @@
-import { ORDERBOOK } from "../data.js";
-
-export const mintStock = (req, res) => {
+import { createClient } from "redis";
+import { v4 } from "uuid";
+export const mintStock = async (req, res) => {
   const { userId, stockSymbol, quantity } = req.body;
-
-  ORDERBOOK[stockSymbol].yes[5].total += quantity;
-  ORDERBOOK[stockSymbol].yes[5].orders[userId] =
-    (ORDERBOOK?.[stockSymbol]?.yes[5]?.orders[userId] || 0) + quantity;
-
-  ORDERBOOK[stockSymbol].no[5].total += quantity;
-  ORDERBOOK[stockSymbol].no[5].orders[userId] =
-    (ORDERBOOK?.[stockSymbol]?.no[5]?.orders[userId] || 0) + quantity;
-
-  return res.json(ORDERBOOK?.[stockSymbol]);
+  const id = v4();
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH(
+    "req",
+    JSON.stringify({ userId, stockSymbol, quantity, id, reqType: "mintStock" })
+  );
+  res.send("mintStock is in queue");
 };

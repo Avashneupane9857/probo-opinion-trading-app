@@ -1,19 +1,15 @@
-import { INR_BALANCES, ORDERBOOK } from "../data.js";
-import { ws } from "../index.js";
-import { sendOrderBook } from "../utils/sahayog.js";
-
-export const createUser = (req, res) => {
+import { createClient } from "redis";
+import { v4 } from "uuid";
+export const createUser = async (req, res) => {
+  const id = v4();
   const { userId } = req.params;
-  if (INR_BALANCES[userId]) {
-    return res.json({
-      msg: "User already exists",
-      success: false,
-    });
-  }
-  INR_BALANCES[userId] = { balance: 0, locked: 0 };
-  sendOrderBook();
-  res.status(200).json({
-    msg: `User '${userId}'  created `,
-    data: INR_BALANCES,
-  });
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH(
+    "req",
+    JSON.stringify({ id, userId, reqType: "createUser" })
+  );
+  // const ress = creatUserWorker(userId);
+
+  res.status(200).json({ msg: "Create user added in queue" });
 };

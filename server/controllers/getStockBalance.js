@@ -1,24 +1,18 @@
-import { STOCK_BALANCES } from "../data.js";
-
-export const getStockBalance = (req, res) => {
-  res.status(200).json({
-    msg: "Stock balances are ",
-    data: STOCK_BALANCES,
-  });
+import { createClient } from "redis";
+import { v4 } from "uuid";
+export const getStockBalance = async (req, res) => {
+  const id = v4();
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH("req", JSON.stringify({ id, reqType: "getStockBalance" }));
+  res.send("get stock balance is in queue");
 };
-export const getUserStockBalance = (req, res) => {
-  const { userId } = req.params;
-  if (!STOCK_BALANCES[userId]) {
-    return res.json({
-      msg: "User not found in Stock balance",
-    });
-  }
-
-  console.log(STOCK_BALANCES[userId]);
-  res.status(200).json({
-    msg: `${userId} stock balance is  `,
-    data: STOCK_BALANCES[userId],
-  });
+export const getUserStockBalance = async (req, res) => {
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH(
+    "req",
+    JSON.stringify({ id, userId, reqType: "getUserStockBalance" })
+  );
+  res.send("get user individuals stock balance is in queue");
 };
-
-//get stock symbol garda tah aaila kei pani aairako chaina

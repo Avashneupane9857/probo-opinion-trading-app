@@ -7,7 +7,7 @@ import { WebSocket } from "ws";
 dotenv.config({});
 const port = process.env.PORT || 3000;
 
-export const ws = new WebSocket("ws://localhost:8080")
+export const ws = new WebSocket("ws://localhost:8080");
 
 app.use(express.json());
 app.get("/", (req, res) => {

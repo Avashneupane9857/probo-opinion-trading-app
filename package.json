@@ -1,0 +1,16 @@
+{
+  "name": "probo-opinion-trading-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd web_socket/src && node index.js && cd ../server && node index.js && cd ../worker && node index.js "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}

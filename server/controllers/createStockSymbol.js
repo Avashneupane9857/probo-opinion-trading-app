@@ -1,24 +1,15 @@
-import { ORDERBOOK, STOCK_BALANCES } from "../data.js";
+import { createClient } from "redis";
+import { v4 } from "uuid";
 
-export const createStockSymbol = (req, res) => {
+export const createStockSymbol = async (req, res) => {
+  const id = v4();
   const { stockSymbol } = req.params;
-  console.log(stockSymbol);
-  Object.keys(STOCK_BALANCES).forEach((userId) => {
-    STOCK_BALANCES[userId][stockSymbol] = {
-      yes: {
-        quantity: 0,
-        locked: 0,
-      },
-      no: {
-        quantity: 0,
-        locked: 0,
-      },
-    };
-  });
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH(
+    "req",
+    JSON.stringify({ id, stockSymbol, reqType: "createStockSymbol" })
+  );
 
-  ORDERBOOK[stockSymbol] = { yes: {}, no: {} };
-
-  return res
-    .status(201)
-    .json({ message: `Symbol ${stockSymbol} created successfully.` });
+  res.status(200).json({ msg: "Create user added in queue" });
 };

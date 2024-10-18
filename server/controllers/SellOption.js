@@ -1,6 +1,6 @@
-import { sellNoOption, sellYesOption } from "../utils/sahayog.js";
-
-export const SellOption = (req, res) => {
+import { createClient } from "redis";
+import { v4 } from "uuid";
+export const SellOption = async (req, res) => {
   const {
     userId,
     stockSymbol,
@@ -9,10 +9,12 @@ export const SellOption = (req, res) => {
     stockType,
   } = req.body;
   const price = originalPrice / 100;
-
-  if (stockType == "yes") {
-    return sellYesOption(userId, stockSymbol, quantity, price, res);
-  } else if (stockType == "no") {
-    return sellNoOption(userId, stockSymbol, quantity, price, res);
-  }
+  const id = v4();
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH(
+    "req",
+    JSON.stringify({ id, userId, stockSymbol, quantity, price, stockType })
+  );
+  res.send("Sell Option is in queue");
 };

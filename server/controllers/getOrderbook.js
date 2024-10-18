@@ -1,10 +1,12 @@
-import { ORDERBOOK } from "../data.js";
+import { createClient } from "redis";
+import { v4 } from "uuid";
 
-export const getOrderbook = (req, res) => {
-  res.status(200).json({
-    msg: "Order book is ",
-    data: ORDERBOOK,
-  });
+export const getOrderbook = async (req, res) => {
+  const id = v4();
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH(JSON.stringify({ id, reqType: "getOrderbook" }));
+  res.send("get order Book added to queue");
 };
 
 // when naya stock symbol create huncha teti bela tyo order book mah add huncha ki nai ?? navaye tah aali lyang hunch tah ani if huncha vaney tyo

@@ -1,6 +1,7 @@
-import { buyNoOption, buyYesOption, sendOrderBook } from "../utils/sahayog.js";
+import { createClient } from "redis";
+import { v4 } from "uuid";
 
-export const BuyOption = (req, res) => {
+export const BuyOption = async (req, res) => {
   const {
     userId,
     stockSymbol,
@@ -8,15 +9,21 @@ export const BuyOption = (req, res) => {
     price: originalPrice,
     stockType,
   } = req.body;
+
   const price = originalPrice / 100;
-
-  let response;
-  if (stockType == "yes") {
-    response = buyYesOption(userId, stockSymbol, quantity, price, res);
-  } else if (stockType == "no") {
-    response = buyNoOption(userId, stockSymbol, quantity, price, res);
-  }
-
-  sendOrderBook();
-  return response;
+  const id = v4();
+  const client = createClient();
+  await client.connect();
+  await client.LPUSH(
+    "req",
+    JSON.stringify({
+      id,
+      userId,
+      stockSymbol,
+      quantity,
+      price,
+      stockType,
+    })
+  );
+  return "Buy option is in queue";
 };
