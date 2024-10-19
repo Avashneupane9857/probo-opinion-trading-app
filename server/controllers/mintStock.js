@@ -1,5 +1,6 @@
 import { createClient } from "redis";
 import { v4 } from "uuid";
+import { listener } from "../pubSubmanager.js";
 export const mintStock = async (req, res) => {
   const { userId, stockSymbol, quantity } = req.body;
   const id = v4();
@@ -9,5 +10,5 @@ export const mintStock = async (req, res) => {
     "req",
     JSON.stringify({ userId, stockSymbol, quantity, id, reqType: "mintStock" })
   );
-  res.send("mintStock is in queue");
+  listener(id, res);
 };

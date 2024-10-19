@@ -26,38 +26,50 @@ async function main() {
     const response = await client.BRPOP("req", 0);
     console.log(response.element.reqType);
     const data = JSON.parse(response.element);
+    const publishClient = createClient();
+    publishClient.connect();
+
     switch (data.reqType) {
       case "createUser":
         const ans = creatUserWorker(data.userId);
+        publishClient.publish(data.id, JSON.stringify(ans));
         console.log("processeed users submission", ans);
         break;
       case "createStockSymbol":
         const anS = createStockSymbolWorker(data.stockSymbol);
+        publishClient.publish(data.id, JSON.stringify(anS));
         console.log("Proceeddede stock symbol create is in queue", anS);
         break;
       case "getBalance":
         const bal = getBalanceWorker();
+        publishClient.publish(data.id, JSON.stringify(bal));
         console.log(bal);
         break;
       case "getUserBalance":
         const Ubal = getUserBalanceWorker(data.userId);
+        publishClient.publish(data.id, JSON.stringify(Ubal));
+
         console.log(Ubal);
         break;
       case "getOrderbook":
         const orderBook = getOrderbookWorker();
+        publishClient.publish(data.id, JSON.stringify(orderBook));
         console.log(orderBook);
         break;
       case "getStockBalance":
         const getStock = getStockBalanceWorker();
+        publishClient.publish(data.id, JSON.stringify(getStock));
         console.log(getStock);
         break;
 
       case "getUserStockBalance":
         const stockBal = getUserStockBalanceWorker(data.userId);
+        publishClient.publish(data.id, JSON.stringify(stockBal));
         console.log(stockBal);
         break;
       case "loadBalance":
         const loadBal = loadBalanceWorker(data.userId, data.amount);
+        publishClient.publish(data.id, JSON.stringify(loadBal));
         console.log(loadBal);
 
         break;
@@ -67,10 +79,12 @@ async function main() {
           data.stockSymbol,
           data.quantity
         );
+        publishClient.publish(data.id, JSON.stringify(mint));
         console.log(mint);
         break;
       case "reset":
         const reset = resetWorker();
+        publishClient.publish(data.id, JSON.stringify(reset));
         console.log(reset);
         break;
       case "BuyOption":
@@ -81,6 +95,7 @@ async function main() {
           data.price,
           data.stockType
         );
+        publishClient.publish(data.id, JSON.stringify(buy));
         console.log(buy);
         break;
       case "SellOption":
@@ -91,6 +106,7 @@ async function main() {
           data.price,
           data.stockType
         );
+        publishClient.publish(data.id, JSON.stringify(sell));
         console.log(sell);
         break;
 

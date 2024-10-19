@@ -329,6 +329,11 @@ export const sellNoOption = (userId, stockSymbol, quantity, price) => {
   };
 };
 
+export const clearObject = (obj) => {
+  for (let key in obj) {
+    delete obj[key];
+  }
+};
 export function sendOrderBook() {
   ws.send(JSON.stringify(ORDERBOOK));
 }

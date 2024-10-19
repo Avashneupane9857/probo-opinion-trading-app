@@ -1,5 +1,7 @@
 import { createClient } from "redis";
 import { v4 } from "uuid";
+
+import { listener } from "../pubSubmanager.js";
 export const SellOption = async (req, res) => {
   const {
     userId,
@@ -24,5 +26,5 @@ export const SellOption = async (req, res) => {
       reqType: "SellOption",
     })
   );
-  res.send("Sell Option is in queue");
+  listener(id, res);
 };

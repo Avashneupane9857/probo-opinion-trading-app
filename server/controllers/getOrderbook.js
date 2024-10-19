@@ -1,12 +1,13 @@
 import { createClient } from "redis";
 import { v4 } from "uuid";
+import { listener } from "../pubSubmanager.js";
 
 export const getOrderbook = async (req, res) => {
   const client = createClient();
   await client.connect();
   const id = v4();
   await client.LPUSH("req", JSON.stringify({ id, reqType: "getOrderbook" }));
-  res.send("get order Book added to queue");
+  listener(id, res);
 };
 
 // when naya stock symbol create huncha teti bela tyo order book mah add huncha ki nai ?? navaye tah aali lyang hunch tah ani if huncha vaney tyo

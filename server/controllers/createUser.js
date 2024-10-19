@@ -1,5 +1,6 @@
 import { createClient } from "redis";
 import { v4 } from "uuid";
+import { listener } from "../pubSubmanager.js";
 export const createUser = async (req, res) => {
   const id = v4();
   const { userId } = req.params;
@@ -10,6 +11,5 @@ export const createUser = async (req, res) => {
     JSON.stringify({ id, userId, reqType: "createUser" })
   );
   // const ress = creatUserWorker(userId);
-
-  res.status(200).json({ msg: "Create user added in queue" });
+  listener(id, res);
 };

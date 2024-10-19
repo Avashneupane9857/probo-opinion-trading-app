@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 import { INR_BALANCES } from "../data.js";
 import { createClient } from "redis";
+import { listener } from "../pubSubmanager.js";
 // all balances
 export const getBalance = async (req, res) => {
   const id = v4();
@@ -20,5 +21,6 @@ export const getUserBalance = async (req, res) => {
     "req",
     JSON.stringify({ id, userId, reqType: "getUserBalance" })
   );
-  res.json({ msg: "GetUserBalance added to queue" });
+  listener(id, res);
+
 };
