@@ -1,4 +1,4 @@
-import { STOCK_BALANCES } from "../data";
+import { STOCK_BALANCES } from "../data.js";
 
 export const mintStockWorker = (userId, stockSymbol, quantity) => {
   if (!STOCK_BALANCES[userId]) {
