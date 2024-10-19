@@ -8,6 +8,8 @@ export const getStockBalance = async (req, res) => {
   res.send("get stock balance is in queue");
 };
 export const getUserStockBalance = async (req, res) => {
+  const { userId } = req.params;
+  const id = v4();
   const client = createClient();
   await client.connect();
   await client.LPUSH(

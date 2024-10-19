@@ -7,7 +7,6 @@ export const getStockBalanceWorker = () => {
   };
 };
 export const getUserStockBalanceWorker = (userId) => {
-  const { userId } = req.params;
   if (!STOCK_BALANCES[userId]) {
     return {
       msg: "User not found in Stock balance",

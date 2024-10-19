@@ -14,7 +14,15 @@ export const SellOption = async (req, res) => {
   await client.connect();
   await client.LPUSH(
     "req",
-    JSON.stringify({ id, userId, stockSymbol, quantity, price, stockType })
+    JSON.stringify({
+      id,
+      userId,
+      stockSymbol,
+      quantity,
+      price,
+      stockType,
+      reqType: "SellOption",
+    })
   );
   res.send("Sell Option is in queue");
 };

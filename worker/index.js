@@ -5,7 +5,7 @@ import {
   getBalanceWorker,
   getUserBalanceWorker,
 } from "./controllers/getBalance.js";
-
+import { WebSocket } from "ws";
 import { getOrderbookWorker } from "./controllers/getOrderbook.js";
 import {
   getStockBalanceWorker,
@@ -14,6 +14,11 @@ import {
 import { resetWorker } from "./controllers/reset.js";
 import { BuyOptionWorker } from "./controllers/BuyOption.js";
 import { SellOptionWorker } from "./controllers/SellOption.js";
+import { loadBalanceWorker } from "./controllers/loadBalance.js";
+import { mintStockWorker } from "./controllers/mintStock.js";
+
+export const ws = new WebSocket("ws://localhost:8080");
+
 async function main() {
   const client = createClient();
   await client.connect();
@@ -27,38 +32,66 @@ async function main() {
         console.log("processeed users submission", ans);
         break;
       case "createStockSymbol":
-        createStockSymbolWorker(data.stockSymbol);
+        const anS = createStockSymbolWorker(data.stockSymbol);
+        console.log("Proceeddede stock symbol create is in queue", anS);
         break;
       case "getBalance":
-        getBalanceWorker();
+        const bal = getBalanceWorker();
+        console.log(bal);
         break;
       case "getUserBalance":
-        getUserBalanceWorker();
+        const Ubal = getUserBalanceWorker(data.userId);
+        console.log(Ubal);
         break;
       case "getOrderbook":
-        getOrderbookWorker();
+        const orderBook = getOrderbookWorker();
+        console.log(orderBook);
         break;
       case "getStockBalance":
-        getStockBalanceWorker();
+        const getStock = getStockBalanceWorker();
+        console.log(getStock);
         break;
 
       case "getUserStockBalance":
-        getUserStockBalanceWorker(data.userId);
+        const stockBal = getUserStockBalanceWorker(data.userId);
+        console.log(stockBal);
         break;
       case "loadBalance":
-        loadBalanceWorker(userId, amount);
+        const loadBal = loadBalanceWorker(data.userId, data.amount);
+        console.log(loadBal);
+
         break;
       case "mintStock":
-        mintStockWorker(userId, stockSymbol, quantity);
+        const mint = mintStockWorker(
+          data.userId,
+          data.stockSymbol,
+          data.quantity
+        );
+        console.log(mint);
         break;
       case "reset":
-        resetWorker();
+        const reset = resetWorker();
+        console.log(reset);
         break;
       case "BuyOption":
-        BuyOptionWorker(userId, stockSymbol, quantity, price, stockType);
+        const buy = BuyOptionWorker(
+          data.userId,
+          data.stockSymbol,
+          data.quantity,
+          data.price,
+          data.stockType
+        );
+        console.log(buy);
         break;
       case "SellOption":
-        SellOptionWorker(userId, stockSymbol, quantity, price, stockType);
+        const sell = SellOptionWorker(
+          data.userId,
+          data.stockSymbol,
+          data.quantity,
+          data.price,
+          data.stockType
+        );
+        console.log(sell);
         break;
 
       default:

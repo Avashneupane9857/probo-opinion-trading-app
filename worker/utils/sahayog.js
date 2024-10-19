@@ -1,18 +1,19 @@
 import { INR_BALANCES, ORDERBOOK, STOCK_BALANCES } from "../data.js";
 import { ws } from "../index.js";
+
 import { mintOppositeStock } from "./mintOppStock.js";
 import { initializeStockBalance, validateOrder } from "./orderValidation.js";
 
 export const buyYesOption = (userId, stockSymbol, quantity, price, res) => {
   if (!validateOrder(userId, quantity, price, INR_BALANCES)) {
-    return res.status(400).json({ error: "Invalid order" });
+    return { error: "Invalid order" };
   }
 
   INR_BALANCES[userId].balance -= quantity * price;
   INR_BALANCES[userId].locked += quantity * price;
 
   if (!ORDERBOOK[stockSymbol]) {
-    return res.json({ msg: "Invalid stockSymbol" });
+    return { msg: "Invalid stockSymbol" };
   }
 
   let availableQuantity = 0;
@@ -107,22 +108,22 @@ export const buyYesOption = (userId, stockSymbol, quantity, price, res) => {
 
   INR_BALANCES[userId].locked -= (quantity - tempQuantity) * price;
 
-  return res.json({
+  return {
     message: `Buy order for 'yes' added for ${stockSymbol}`,
     orderbook: ORDERBOOK[stockSymbol],
-  });
+  };
 };
 
 export const buyNoOption = (userId, stockSymbol, quantity, price, res) => {
   if (!validateOrder(userId, quantity, price, INR_BALANCES)) {
-    return res.status(400).json({ error: "Invalid order" });
+    return { error: "Invalid order" };
   }
 
   INR_BALANCES[userId].balance -= quantity * price;
   INR_BALANCES[userId].locked += quantity * price;
 
   if (!ORDERBOOK[stockSymbol]) {
-    return res.json({ msg: "Invalid stock symbol" });
+    return { msg: "Invalid stock symbol" };
   }
 
   let availableQuantity = 0;
@@ -179,7 +180,7 @@ export const buyNoOption = (userId, stockSymbol, quantity, price, res) => {
           INR_BALANCES[user].locked -= toTake * price;
         }
         if (!ORDERBOOK[stockSymbol]) {
-          return res.json({ msg: "Invalid stock symbol" });
+          return { msg: "Invalid stock symbol" };
         }
       }
 
@@ -262,17 +263,15 @@ export const buyNoOption = (userId, stockSymbol, quantity, price, res) => {
 
   INR_BALANCES[userId].locked -= (quantity - tempQuantity) * price;
 
-  return res.json({
+  return {
     message: `Buy order for 'no' added for ${stockSymbol}`,
     orderbook: ORDERBOOK[stockSymbol],
-  });
+  };
 };
-export const sellYesOption = (userId, stockSymbol, quantity, price, res) => {
+export const sellYesOption = (userId, stockSymbol, quantity, price) => {
   if (STOCK_BALANCES[userId][stockSymbol]?.yes) {
     if (STOCK_BALANCES[userId]?.[stockSymbol]?.yes.quantity < quantity) {
-      return res
-        .status(400)
-        .json({ error: 'Insufficient "yes" stocks to sell' });
+      return 'Insufficient "yes" stocks to sell';
     }
 
     STOCK_BALANCES[userId][stockSymbol].yes.quantity -= quantity;
@@ -289,14 +288,14 @@ export const sellYesOption = (userId, stockSymbol, quantity, price, res) => {
   ORDERBOOK[stockSymbol].yes[price].total += quantity;
   ORDERBOOK[stockSymbol].yes[price].orders[userId].quantity =
     (ORDERBOOK[stockSymbol].yes[price].orders[userId].quantity || 0) + quantity;
-  return res.json({
+  return {
     message: `Sell order for 'yes' added for ${stockSymbol}`,
     orderbook: ORDERBOOK[stockSymbol],
-  });
+  };
 };
-export const sellNoOption = (userId, stockSymbol, quantity, price, res) => {
+export const sellNoOption = (userId, stockSymbol, quantity, price) => {
   if (!ORDERBOOK[stockSymbol]) {
-    return res.json({ msg: "Invalid stock symbol" });
+    return { msg: "Invalid stock symbol" };
   }
 
   if (STOCK_BALANCES[userId]?.[stockSymbol]?.no) {
@@ -324,10 +323,10 @@ export const sellNoOption = (userId, stockSymbol, quantity, price, res) => {
   ORDERBOOK[stockSymbol].no[price].total += quantity;
   ORDERBOOK[stockSymbol].no[price].orders[userId].quantity =
     (ORDERBOOK[stockSymbol].no[price].orders[userId].quantity || 0) + quantity;
-  return res.json({
+  return {
     message: `Sell order for 'no' added for ${stockSymbol}`,
     orderbook: ORDERBOOK[stockSymbol],
-  });
+  };
 };
 
 export function sendOrderBook() {

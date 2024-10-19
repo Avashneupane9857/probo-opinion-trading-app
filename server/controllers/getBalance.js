@@ -13,11 +13,12 @@ export const getBalance = async (req, res) => {
 
 export const getUserBalance = async (req, res) => {
   const { userId } = req.params;
+  const id = v4();
   const client = createClient();
   await client.connect();
   await client.LPUSH(
     "req",
-    JSON.stringify({ userId, reqType: "getUserBalance" })
+    JSON.stringify({ id, userId, reqType: "getUserBalance" })
   );
-  return { msg: "GetUserBalance added to queue" };
+  res.json({ msg: "GetUserBalance added to queue" });
 };

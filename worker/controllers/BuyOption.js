@@ -9,9 +9,9 @@ export const BuyOptionWorker = (
 ) => {
   let response;
   if (stockType == "yes") {
-    response = buyYesOption(userId, stockSymbol, quantity, price, res);
+    response = buyYesOption(userId, stockSymbol, quantity, price);
   } else if (stockType == "no") {
-    response = buyNoOption(userId, stockSymbol, quantity, price, res);
+    response = buyNoOption(userId, stockSymbol, quantity, price);
   }
 
   sendOrderBook();

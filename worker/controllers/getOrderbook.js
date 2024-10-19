@@ -2,8 +2,6 @@ import { ORDERBOOK } from "../data.js";
 import { sendOrderBook } from "../utils/sahayog.js";
 
 export const getOrderbookWorker = () => {
-  sendOrderBook();
-
   return {
     msg: "Order book is ",
     data: ORDERBOOK,
