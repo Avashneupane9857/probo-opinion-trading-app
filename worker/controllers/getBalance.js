@@ -1,6 +1,6 @@
 import { INR_BALANCES } from "../data.js";
 // all balances
-export const getBalanceWoker = () => {
+export const getBalanceWorker = () => {
   return {
     msg: " All user balances are  ",
     data: INR_BALANCES,

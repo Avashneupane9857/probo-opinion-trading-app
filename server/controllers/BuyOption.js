@@ -23,6 +23,7 @@ export const BuyOption = async (req, res) => {
       quantity,
       price,
       stockType,
+      reqType:"BuyOption"
     })
   );
   return "Buy option is in queue";

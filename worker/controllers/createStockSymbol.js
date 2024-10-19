@@ -1,6 +1,6 @@
 import { ORDERBOOK, STOCK_BALANCES } from "../data.js";
 
-export const createStockSymbolWoker = (stockSymbol) => {
+export const createStockSymbolWorker = (stockSymbol) => {
   console.log(stockSymbol);
   Object.keys(STOCK_BALANCES).forEach((userId) => {
     STOCK_BALANCES[userId][stockSymbol] = {
