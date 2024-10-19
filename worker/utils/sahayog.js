@@ -300,7 +300,7 @@ export const sellNoOption = (userId, stockSymbol, quantity, price) => {
 
   if (STOCK_BALANCES[userId]?.[stockSymbol]?.no) {
     if (STOCK_BALANCES[userId]?.[stockSymbol]?.no.quantity < quantity) {
-      return res.json({ error: 'Insufficient "no" stocks to sell' });
+      return { error: 'Insufficient "no" stocks to sell' };
     }
 
     STOCK_BALANCES[userId][stockSymbol].no.quantity -= quantity;
