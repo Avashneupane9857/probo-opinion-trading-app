@@ -6,7 +6,7 @@ export const buyYesOption = (userId, stockSymbol, quantity, price) => {
   if (!validateOrder(userId, quantity, price, INR_BALANCES)) {
     return { error: "Invalid order" };
   }
-    
+
 
   INR_BALANCES[userId].balance -= quantity * price;
   INR_BALANCES[userId].locked += quantity * price;
@@ -249,7 +249,7 @@ export const buyNoOption = (userId, stockSymbol, quantity, price) => {
         ORDERBOOK[stockSymbol].yes[1000 - price].orders[user].type == "sell"
       ) {
         if (STOCK_BALANCES[user][stockSymbol].yes) {
-          STOCK_BALANCES[user][stockSymbol].yes.locked -= toTake;
+          STOCK_BALANCES[user][stockSymbol].yes.locked -= toTake;//
           INR_BALANCES[user].balance += toTake * (1000 - price);
         }
       } else if (
