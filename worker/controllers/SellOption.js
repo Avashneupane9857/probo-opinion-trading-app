@@ -7,9 +7,12 @@ export const SellOptionWorker = (
   price,
   stockType
 ) => {
+  let res;
   if (stockType == "yes") {
-    return sellYesOption(userId, stockSymbol, quantity, price);
+    res = sellYesOption(userId, stockSymbol, quantity, price);
   } else if (stockType == "no") {
-    return sellNoOption(userId, stockSymbol, quantity, price);
+    res = sellNoOption(userId, stockSymbol, quantity, price);
   }
+  sendOrderBook();
+  return res;
 };
