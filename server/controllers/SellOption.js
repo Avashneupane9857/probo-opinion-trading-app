@@ -3,14 +3,8 @@ import { v4 } from "uuid";
 
 import { listener } from "../pubSubmanager.js";
 export const SellOption = async (req, res) => {
-  const {
-    userId,
-    stockSymbol,
-    quantity,
-    price: originalPrice,
-    stockType,
-  } = req.body;
-  const price = originalPrice / 100;
+  const { userId, stockSymbol, quantity, price, stockType } = req.body;
+
   const id = v4();
   const client = createClient();
   await client.connect();

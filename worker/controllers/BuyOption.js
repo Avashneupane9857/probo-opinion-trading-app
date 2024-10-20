@@ -8,6 +8,7 @@ export const BuyOptionWorker = (
   stockType
 ) => {
   let response;
+
   if (stockType == "yes") {
     response = buyYesOption(userId, stockSymbol, quantity, price);
   } else if (stockType == "no") {

@@ -6,7 +6,7 @@ export const getStockBalance = async (req, res) => {
   const client = createClient();
   await client.connect();
   await client.LPUSH("req", JSON.stringify({ id, reqType: "getStockBalance" }));
-  res.send("get stock balance is in queue");
+  listener(id, res);
 };
 export const getUserStockBalance = async (req, res) => {
   const { userId } = req.params;

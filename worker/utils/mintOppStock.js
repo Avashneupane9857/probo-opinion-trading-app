@@ -7,7 +7,7 @@ export const mintOppositeStock = (
   userId,
   orderType
 ) => {
-  const oppositePrice = 10 - price;
+  const oppositePrice = 1000 - price;
 
   if (orderType === "yes") {
     if (!ORDERBOOK[stockSymbol].no[oppositePrice]) {
