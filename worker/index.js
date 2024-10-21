@@ -17,10 +17,14 @@ import { SellOptionWorker } from "./controllers/SellOption.js";
 import { loadBalanceWorker } from "./controllers/loadBalance.js";
 import { mintStockWorker } from "./controllers/mintStock.js";
 
-export const ws = new WebSocket("ws://host.docker.internal:8080");
+export const ws = new WebSocket(
+  process.env.WEBSOCKET_URL || "ws://localhost:8080"
+);
 
 async function main() {
-  const client = createClient();
+  const client = createClient({
+    url: process.env.REDIS_URL || "redis://localhost:6379",
+  });
   await client.connect();
   while (1) {
     const response = await client.BRPOP("req", 0);

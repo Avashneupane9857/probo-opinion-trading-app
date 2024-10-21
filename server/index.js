@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import routes from "./routes.js";
 
 dotenv.config({});
-const port = process.env.PORT || 3001;
+const port = 3001;
 
 app.use(express.json());
 app.get("/", (req, res) => {
