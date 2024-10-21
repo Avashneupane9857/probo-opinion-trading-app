@@ -17,7 +17,7 @@ import { SellOptionWorker } from "./controllers/SellOption.js";
 import { loadBalanceWorker } from "./controllers/loadBalance.js";
 import { mintStockWorker } from "./controllers/mintStock.js";
 
-export const ws = new WebSocket("ws://localhost:8080");
+export const ws = new WebSocket("ws://host.docker.internal:8080");
 
 async function main() {
   const client = createClient();
