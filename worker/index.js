@@ -23,7 +23,8 @@ export const ws = new WebSocket(
 
 async function main() {
   const client = createClient({
-    url: process.env.REDIS_URL || "redis://localhost:6379",
+    host: process.env.REDIS_HOST || "my-redis", // Use the service name
+    port: process.env.REDIS_PORT || 6379,
   });
   await client.connect();
   while (1) {

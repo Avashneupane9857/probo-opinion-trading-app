@@ -1,7 +1,10 @@
 import { createClient } from "redis";
 const client = createClient();
 client.connect();
-const subscribeClient = createClient();
+const subscribeClient = createClient({
+  host: process.env.REDIS_HOST || "my-redis", // Use the service name
+  port: process.env.REDIS_PORT || 6379,
+});
 subscribeClient.connect();
 
 export async function listener(symbol, res) {

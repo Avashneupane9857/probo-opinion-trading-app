@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: my-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+
+  websocket:
+    build:
+      context: ./web_socket
+    container_name: probo-ws
+    ports:
+      - "8080:8080"
+    environment:
+      REDIS_HOST: my-redis 
+      REDIS_PORT: 6379
+      SERVER_URL: http://probo-server:3001
+    depends_on:
+      - redis
+    networks:
+      - my-network
+
+  server:
+    build:
+      context: ./server
+    container_name: probo-server
+    ports:
+      - "3001:3001"
+    environment:
+      REDIS_HOST: my-redis 
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
+      - websocket
+    networks:
+      - my-network
+
+  worker:
+    build:
+      context: ./worker
+    container_name: probo-worker
+    environment:
+      SERVER_URL: http://probo-server:3001
+      REDIS_HOST: my-redis 
+      REDIS_PORT: 6379
+      WEBSOCKET_URL: ws://probo-ws:8080
+    depends_on:
+      - server
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

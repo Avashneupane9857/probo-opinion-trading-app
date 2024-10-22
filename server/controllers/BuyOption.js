@@ -6,7 +6,10 @@ export const BuyOption = async (req, res) => {
   const { userId, stockSymbol, quantity, price, stockType } = req.body;
 
   const id = v4();
-  const client = createClient();
+  const client = createClient({
+    host: process.env.REDIS_HOST || "my-redis",
+    port: process.env.REDIS_PORT || 6379,
+  });
   await client.connect();
   await client.LPUSH(
     "req",

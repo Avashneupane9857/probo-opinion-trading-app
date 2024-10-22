@@ -3,7 +3,10 @@ import { v4 } from "uuid";
 import { listener } from "../pubSubmanager.js";
 export const getStockBalance = async (req, res) => {
   const id = v4();
-  const client = createClient();
+  const client = createClient({
+    host: process.env.REDIS_HOST || "my-redis", // Use the service name
+    port: process.env.REDIS_PORT || 6379,
+  });
   await client.connect();
   await client.LPUSH("req", JSON.stringify({ id, reqType: "getStockBalance" }));
   listener(id, res);
