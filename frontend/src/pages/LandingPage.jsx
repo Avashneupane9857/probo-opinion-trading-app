@@ -1,6 +1,8 @@
+import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import HeroVid from "../components/HeroVid";
 import Navbar from "../components/Navbar";
+import Upsides from "../components/Upsides";
 
 function LandingPage() {
   return (
@@ -13,6 +15,8 @@ function LandingPage() {
         </div>
       </div>
       <HeroVid />
+      <Upsides />
+      <Footer />
     </div>
   );
 }
