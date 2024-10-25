@@ -12,3 +12,63 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String
+  Orders   Orders[]
+}
+
+model Market {
+  id                        Int                         @id @default(autoincrement())
+  symbol                    String                      @unique
+  endTime                   DateTime
+  description               String
+  source                    String?
+  Market_Categories_Mapping Market_Categories_Mapping[]
+  Orders                    Orders[]
+}
+
+model Category {
+  id                        Int                         @id @default(autoincrement())
+  title                     String
+  icon                      String?
+  description               String
+  Market_Categories_Mapping Market_Categories_Mapping[]
+}
+
+model Market_Categories_Mapping {
+  id         Int      @id @default(autoincrement())
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  market     Market   @relation(fields: [marketId], references: [id])
+  marketId   Int
+}
+
+model Orders {
+  id        Int      @id @default(autoincrement())
+  side      String
+  type      String
+  qty       Int
+  price     Int
+  filledQty Int
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  market    Market   @relation(fields: [marketId], references: [id])
+  marketId  Int
+
+  buyTrades  Trades[] @relation("BuyOrder")
+  sellTrades Trades[] @relation("SellOrder")
+}
+
+model Trades {
+  id          Int      @id @default(autoincrement())
+  price       Int
+  timestamp   DateTime
+  buyOrder    Orders   @relation("BuyOrder", fields: [buyOrderId], references: [id])
+  buyOrderId  Int
+  sellOrder   Orders   @relation("SellOrder", fields: [sellOrderId], references: [id])
+  sellOrderId Int
+}
