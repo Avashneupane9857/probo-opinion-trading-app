@@ -22,17 +22,18 @@ model User {
 model Market {
   id                        Int                         @id @default(autoincrement())
   symbol                    String                      @unique
-  endTime                   DateTime
-  description               String
+  endTime                   Int
+  description               String?
   source                    String?
   Market_Categories_Mapping Market_Categories_Mapping[]
   Orders                    Orders[]
 }
 
 model Category {
-  id                        Int                         @id @default(autoincrement())
-  title                     String
-  icon                      String?
+  id    Int     @id @default(autoincrement())
+  title String
+  icon  String?
+
   description               String
   Market_Categories_Mapping Market_Categories_Mapping[]
 }

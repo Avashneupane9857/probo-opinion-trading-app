@@ -42,7 +42,12 @@ async function main() {
         console.log("processeed users submission", ans);
         break;
       case "createStockSymbol":
-        const anS = await createStockSymbolWorker(data.stockSymbol);
+        const anS = await createStockSymbolWorker(
+          data.stockSymbol,
+          data.endTime,
+          data.description,
+          data.source
+        );
         publishClient.publish(data.id, JSON.stringify(anS));
         console.log("Proceeddede stock symbol create is in queue", anS);
         break;

@@ -14,8 +14,8 @@ import { BuyOption } from "./controllers/BuyOption.js";
 import { SellOption } from "./controllers/SellOption.js";
 
 const routes = express.Router();
-routes.post("/user/create/:userId", createUser);
-routes.post("/symbol/create/:stockSymbol", createStockSymbol);
+routes.post("/user/create", createUser);
+routes.post("/symbol/create", createStockSymbol);
 routes.get("/orderbook", getOrderbook);
 routes.get("/balances/inr", getBalance);
 routes.get("/balance/inr/:userId", getUserBalance);
