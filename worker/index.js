@@ -16,7 +16,8 @@ import { BuyOptionWorker } from "./controllers/BuyOption.js";
 import { SellOptionWorker } from "./controllers/SellOption.js";
 import { loadBalanceWorker } from "./controllers/loadBalance.js";
 import { mintStockWorker } from "./controllers/mintStock.js";
-
+import dotenv from "dotenv";
+dotenv.config({});
 export const ws = new WebSocket(
   process.env.WEBSOCKET_URL || "ws://localhost:8080"
 );
@@ -36,50 +37,50 @@ async function main() {
 
     switch (data.reqType) {
       case "createUser":
-        const ans = creatUserWorker(data.userId);
+        const ans = await creatUserWorker(data.userId);
         publishClient.publish(data.id, JSON.stringify(ans));
         console.log("processeed users submission", ans);
         break;
       case "createStockSymbol":
-        const anS = createStockSymbolWorker(data.stockSymbol);
+        const anS = await createStockSymbolWorker(data.stockSymbol);
         publishClient.publish(data.id, JSON.stringify(anS));
         console.log("Proceeddede stock symbol create is in queue", anS);
         break;
       case "getBalance":
-        const bal = getBalanceWorker();
+        const bal = await getBalanceWorker();
         publishClient.publish(data.id, JSON.stringify(bal));
         console.log(bal);
         break;
       case "getUserBalance":
-        const Ubal = getUserBalanceWorker(data.userId);
+        const Ubal = await getUserBalanceWorker(data.userId);
         publishClient.publish(data.id, JSON.stringify(Ubal));
 
         console.log(Ubal);
         break;
       case "getOrderbook":
-        const orderBook = getOrderbookWorker();
+        const orderBook = await getOrderbookWorker();
         publishClient.publish(data.id, JSON.stringify(orderBook));
         console.log(orderBook);
         break;
       case "getStockBalance":
-        const getStock = getStockBalanceWorker();
+        const getStock = await getStockBalanceWorker();
         publishClient.publish(data.id, JSON.stringify(getStock));
         console.log(getStock);
         break;
 
       case "getUserStockBalance":
-        const stockBal = getUserStockBalanceWorker(data.userId);
+        const stockBal = await getUserStockBalanceWorker(data.userId);
         publishClient.publish(data.id, JSON.stringify(stockBal));
         console.log(stockBal);
         break;
       case "loadBalance":
-        const loadBal = loadBalanceWorker(data.userId, data.amount);
+        const loadBal = await loadBalanceWorker(data.userId, data.amount);
         publishClient.publish(data.id, JSON.stringify(loadBal));
         console.log(loadBal);
 
         break;
       case "mintStock":
-        const mint = mintStockWorker(
+        const mint = await mintStockWorker(
           data.userId,
           data.stockSymbol,
           data.quantity
@@ -88,12 +89,12 @@ async function main() {
         console.log(mint);
         break;
       case "reset":
-        const reset = resetWorker();
+        const reset = await resetWorker();
         publishClient.publish(data.id, JSON.stringify(reset));
         console.log(reset);
         break;
       case "BuyOption":
-        const buy = BuyOptionWorker(
+        const buy = await BuyOptionWorker(
           data.userId,
           data.stockSymbol,
           data.quantity,
@@ -104,7 +105,7 @@ async function main() {
         console.log(buy);
         break;
       case "SellOption":
-        const sell = SellOptionWorker(
+        const sell = await SellOptionWorker(
           data.userId,
           data.stockSymbol,
           data.quantity,

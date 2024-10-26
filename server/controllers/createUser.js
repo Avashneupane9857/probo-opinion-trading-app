@@ -5,7 +5,7 @@ export const createUser = async (req, res) => {
   const id = v4();
   const { userId } = req.params;
   const client = createClient({
-    host: process.env.REDIS_HOST || "my-redis", // Use the service name
+    host: process.env.REDIS_HOST || "my-redis",
     port: process.env.REDIS_PORT || 6379,
   });
   await client.connect();
@@ -13,6 +13,6 @@ export const createUser = async (req, res) => {
     "req",
     JSON.stringify({ id, userId, reqType: "createUser" })
   );
-  // const ress = creatUserWorker(userId);
+
   listener(id, res);
 };
