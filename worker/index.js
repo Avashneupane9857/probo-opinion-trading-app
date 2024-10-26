@@ -6,7 +6,10 @@ import {
   getUserBalanceWorker,
 } from "./controllers/getBalance.js";
 import { WebSocket } from "ws";
-import { getOrderbookWorker } from "./controllers/getOrderbook.js";
+import {
+  getOrderBookSymbolWorker,
+  getOrderbookWorker,
+} from "./controllers/getOrderbook.js";
 import {
   getStockBalanceWorker,
   getUserStockBalanceWorker,
@@ -24,7 +27,7 @@ export const ws = new WebSocket(
 
 async function main() {
   const client = createClient({
-    host: process.env.REDIS_HOST || "my-redis", // Use the service name
+    host: process.env.REDIS_HOST || "my-redis",
     port: process.env.REDIS_PORT || 6379,
   });
   await client.connect();
@@ -43,24 +46,29 @@ async function main() {
         break;
       case "createStockSymbol":
         const anS = await createStockSymbolWorker(
-          data.stockSymbol,
-          data.endTime,
-          data.description,
-          data.source
+          data.stockSymbol
+          // data.endTime,
+          // data.description,
+          // data.source
         );
         publishClient.publish(data.id, JSON.stringify(anS));
         console.log("Proceeddede stock symbol create is in queue", anS);
         break;
       case "getBalance":
-        const bal = await getBalanceWorker();
+        const bal = getBalanceWorker();
         publishClient.publish(data.id, JSON.stringify(bal));
         console.log(bal);
         break;
       case "getUserBalance":
-        const Ubal = await getUserBalanceWorker(data.userId);
+        const Ubal = getUserBalanceWorker(data.userId);
         publishClient.publish(data.id, JSON.stringify(Ubal));
 
         console.log(Ubal);
+        break;
+      case "getOrderBookSymbolWorker":
+        const OrdSymb = getOrderBookSymbolWorker(data.stockSymbol);
+        publishClient.publish(data.id, JSON.stringify(OrdSymb));
+        console.log(OrdSymb);
         break;
       case "getOrderbook":
         const orderBook = await getOrderbookWorker();

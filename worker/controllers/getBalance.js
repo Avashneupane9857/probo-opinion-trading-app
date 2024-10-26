@@ -13,7 +13,6 @@ export const getUserBalanceWorker = (userId) => {
   }
 
   return {
-    msg: `user: ${userId}`,
-    data: INR_BALANCES[userId],
+    msg: INR_BALANCES[userId],
   };
 };

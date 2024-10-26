@@ -11,8 +11,7 @@ export const getBalance = async (req, res) => {
   });
   await client.connect();
   await client.LPUSH("req", JSON.stringify({ id, reqType: "getBalance" }));
-
-  res.status(200).json({ msg: "getBalance  added in queue" });
+  listener(id, res);
 };
 
 export const getUserBalance = async (req, res) => {
